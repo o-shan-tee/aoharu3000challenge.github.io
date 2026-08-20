@@ -6,10 +6,10 @@
   <style>
     body { font-family: sans-serif; text-align: center; padding: 20px; }
     
-    /* タイトル */
+    /*タイトル*/
     h1 { margin-bottom: 20px; }
 
-    /* ガチャボタンエリア */
+    /*ボタン*/
     .btn-container {
       margin-bottom: 30px;
     }
@@ -27,19 +27,19 @@
       background-color: #e2e6ea;
     }
 
-    /* 結果全体を縦に並べる設定 */
+    /*結果*/
     #result {
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    /* 合計金額の見出し */
+    /*合計金額*/
     #result h2 {
       margin: 10px 0;
     }
 
-    /* 商品リスト */
+    /*リスト*/
     #result ul {
       text-align: left;
       padding-left: 20px;
@@ -50,12 +50,12 @@
 <body>
   <h1>3000円以上の愛を捧げてガチャガチャに参加しよう</h1>
 
-  <!-- 1. ガチャボタン -->
+  <!--ボタン-->
   <div class="btn-container">
     <button onclick="drawGacha()">ガチャガチャか...興奮してきたな</button>
   </div>
 
-  <!-- 2. 結果表示エリア（縦並び） -->
+  <!--結果-->
   <div id="result"></div>
 
   <script>
@@ -73,18 +73,17 @@
     ];
 
     function drawGacha() {
-      let found = false;
-      // 判定をしっかり行うため試行回数を増やしています
+      let found = false; 
       for (let i = 0; i < 10000; i++) {
         const k = Math.floor(Math.random() * 6) + 1;
         const selected = [];
         let rejectCombination = false;
 
-        // --- 1. 商品選出（乾杯ジョッキの排出率ダウン） ---
+        
         for (let j = 0; j < k; j++) {
           const item = items[Math.floor(Math.random() * items.length)];
           
-          // 「乾杯ジョッキ」が選ばれたら 80% の確率でやり直し（採用率20%）
+          
           if (item.name === "乾杯ジョッキ") {
             if (Math.random() < 0.90) { 
               rejectCombination = true;
@@ -94,30 +93,30 @@
           selected.push(item);
         }
 
-        // ジョッキ弾きが発生した場合は次の試行へ
+        
         if (rejectCombination) continue;
 
-        // --- 2. 金額判定（3000円に近いほど出やすい） ---
+        //金額判定
         const totalPrice = selected.reduce((sum, item) => sum + item.price, 0);
 
         if (totalPrice >= 3000 && totalPrice <= 3650) {
           const diff = totalPrice - 3000;
 
-          // 3000円からの差額が大きいほど確率ダウン
-          let acceptRate = 1.0; // 3000〜3349円：100%（最優先）
+        
+          let acceptRate = 1.0;
 
           if (diff >= 350 && diff < 605) {
-            acceptRate = 0.4;  // 3350〜3699円：40%
+            acceptRate = 0.4; 
           } else if (diff >= 605) {
-            acceptRate = 0.02; // 3700円以上：5%（激レア）
+            acceptRate = 0.02;
           }
 
-          // 確率判定で落とされたらやり直し
+          //さらさら日高
           if (Math.random() > acceptRate) {
             continue;
           }
 
-          // --- 3. 画面表示 ---
+          //表示
           found = true;
           const counts = {};
           selected.forEach(item => {
