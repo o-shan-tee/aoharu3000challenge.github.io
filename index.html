@@ -100,7 +100,7 @@
         // --- 2. 金額判定（3000円に近いほど出やすい） ---
         const totalPrice = selected.reduce((sum, item) => sum + item.price, 0);
 
-        if (totalPrice >= 3000 && totalPrice <= 3799) {
+        if (totalPrice >= 3000 && totalPrice <= 3650) {
           const diff = totalPrice - 3000;
 
           // 3000円からの差額が大きいほど確率ダウン
