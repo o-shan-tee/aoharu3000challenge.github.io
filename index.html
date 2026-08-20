@@ -5,13 +5,47 @@
   <title>3000以上の愛</title>
   <style>
     body { font-family: sans-serif; text-align: center; padding: 20px; }
-    button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
-    #result { margin-top: 20px; text-align: left; display: inline-block; }
+    
+    /* ボタン周りのレイアウト調整 */
+    .btn-container {
+      margin: 20px 0;
+    }
+    
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      background-color: #f8f9fa;
+    }
+
+    button:hover {
+      background-color: #e2e6ea;
+    }
+
+    /* 結果表示エリア（ブロック表示で改行させる） */
+    #result {
+      margin-top: 20px;
+      display: block;
+    }
+
+    #result ul {
+      display: inline-block;
+      text-align: left;
+      padding-left: 20px;
+    }
   </style>
 </head>
 <body>
   <h1>3000以上の愛</h1>
-  <button onclick="drawGacha()">ガチャガチャか...興奮してきたな</button>
+
+  <!-- ボタンを配置するエリア（タイトルと結果の間） -->
+  <div class="btn-container">
+    <button onclick="drawGacha()">ガチャガチャか...興奮してきたな</button>
+  </div>
+
+  <!-- 結果表示エリア -->
   <div id="result"></div>
 
   <script>
@@ -41,13 +75,12 @@
 
         if (totalPrice >= 3000 && totalPrice <= 3999) {
           found = true;
-          // 件数をカウント
           const counts = {};
           selected.forEach(item => {
             counts[item.name] = (counts[item.name] || 0) + 1;
           });
 
-          let html = `<h3>合計金額 ${totalPrice}円</h3><ul>`;
+          let html = `<h2>合計金額 ${totalPrice}円</h2><ul>`;
           for (const [name, count] of Object.entries(counts)) {
             const price = items.find(it => it.name === name).price;
             html += `<li>${name}×${count}個 (${price * count}円)</li>`;
