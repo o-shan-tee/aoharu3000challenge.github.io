@@ -6,9 +6,12 @@
   <style>
     body { font-family: sans-serif; text-align: center; padding: 20px; }
     
-    /* ボタン周りのレイアウト調整 */
+    /* タイトル */
+    h1 { margin-bottom: 20px; }
+
+    /* ガチャボタンエリア */
     .btn-container {
-      margin: 20px 0;
+      margin-bottom: 30px;
     }
     
     button {
@@ -24,28 +27,35 @@
       background-color: #e2e6ea;
     }
 
-    /* 結果表示エリア（ブロック表示で改行させる） */
+    /* 結果全体を縦に並べる設定 */
     #result {
-      margin-top: 20px;
-      display: block;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
+    /* 合計金額の見出し */
+    #result h2 {
+      margin: 10px 0;
+    }
+
+    /* 商品リスト */
     #result ul {
-      display: inline-block;
       text-align: left;
       padding-left: 20px;
+      margin: 0;
     }
   </style>
 </head>
 <body>
   <h1>3000以上の愛</h1>
 
-  <!-- ボタンを配置するエリア（タイトルと結果の間） -->
+  <!-- 1. ガチャボタン -->
   <div class="btn-container">
     <button onclick="drawGacha()">ガチャガチャか...興奮してきたな</button>
   </div>
 
-  <!-- 結果表示エリア -->
+  <!-- 2. 結果表示エリア（縦並び） -->
   <div id="result"></div>
 
   <script>
