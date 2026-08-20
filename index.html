@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>3000以上の愛</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 20px; }
+    button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+    #result { margin-top: 20px; text-align: left; display: inline-block; }
+  </style>
+</head>
+<body>
+  <h1>3000以上の愛</h1>
+  <button onclick="drawGacha()">ガチャガチャか...興奮してきたな</button>
+  <div id="result"></div>
+
+  <script>
+    const items = [
+      { name: "ランダムホログラムカード", price: 660 },
+      { name: "ランダムカンバッジ", price: 605 },
+      { name: "めじるしアクリルチャーム", price: 990 },
+      { name: "アクリルフィギュア", price: 2090 },
+      { name: "透けるアクリルスタンド", price: 1320 },
+      { name: "アクリルリング", price: 1100 },
+      { name: "ホログラムアクリルステッキ", price: 1540 },
+      { name: "ペアアクリルアート", price: 2650 },
+      { name: "硬質カードケースセット", price: 1650 },
+      { name: "乾杯ジョッキ", price: 3300 }
+    ];
+
+    function drawGacha() {
+      let found = false;
+      for (let i = 0; i < 1000; i++) {
+        const k = Math.floor(Math.random() * 6) + 1;
+        const selected = [];
+        for (let j = 0; j < k; j++) {
+          selected.push(items[Math.floor(Math.random() * items.length)]);
+        }
+
+        const totalPrice = selected.reduce((sum, item) => sum + item.price, 0);
+
+        if (totalPrice >= 3000 && totalPrice <= 3999) {
+          found = true;
+          // 件数をカウント
+          const counts = {};
+          selected.forEach(item => {
+            counts[item.name] = (counts[item.name] || 0) + 1;
+          });
+
+          let html = `<h3>合計金額 ${totalPrice}円</h3><ul>`;
+          for (const [name, count] of Object.entries(counts)) {
+            const price = items.find(it => it.name === name).price;
+            html += `<li>${name}×${count}個 (${price * count}円)</li>`;
+          }
+          html += "</ul>";
+          document.getElementById("result").innerHTML = html;
+          break;
+        }
+      }
+      if (!found) {
+        document.getElementById("result").innerHTML = "<p>条件に合う組み合わせが見つかりませんでした。</p>";
+      }
+    }
+  </script>
+</body>
+</html>
