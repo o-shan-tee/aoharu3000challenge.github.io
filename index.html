@@ -74,7 +74,7 @@
 
     function drawGacha() {
       let found = false;
-      for (let i = 0; i < 3000; i++) { // 確率調整を入れるため試行回数を増やしています
+      for (let i = 0; i < 5000; i++) { // 判定を厳しくするため試行回数を増やしています
         const k = Math.floor(Math.random() * 6) + 1;
         const selected = [];
         for (let j = 0; j < k; j++) {
@@ -83,24 +83,27 @@
 
         const totalPrice = selected.reduce((sum, item) => sum + item.price, 0);
 
-        // 1. まず 3000 〜 3999 円の範囲か確認
+        // 1. 3000 〜 3999 円の範囲か判定
         if (totalPrice >= 3000 && totalPrice <= 3999) {
           
-          // 2. 金額に応じた確率判定（重み付け）
-          let acceptRate = 1.0; // 基本の当選確率 (100%)
+          // 2. 3000円からの差額を計算
+          const diff = totalPrice - 3000;
 
-          if (totalPrice >= 3000 && totalPrice <= 3500) {
-            acceptRate = 1.0;  // 3000〜3500円：100%の確率で採用（出やすい）
-          } else if (totalPrice >= 3600) {
-            acceptRate = 0.15; // 3600円以上：15%の確率でしか採用しない（出にくい）
+          // 350円刻みで1段ずつ確率をダウンさせる設定（3000円台前半が一番出やすい）
+          let acceptRate = 1.0; // 3000〜3349円：100%
+
+          if (diff >= 350 && diff < 700) {
+            acceptRate = 0.4;  // 3350〜3699円：40%まで下げる
+          } else if (diff >= 700) {
+            acceptRate = 0.05; // 3700円以上：5%（かなり激レア）
           }
 
-          // 乱数で採用するか判断（不採用なら次の試行へ）
+          // 判定（不採用ならやり直し）
           if (Math.random() > acceptRate) {
             continue;
           }
 
-          // 条件クリア（画面表示処理）
+          // 条件クリア時の画面表示
           found = true;
           const counts = {};
           selected.forEach(item => {
