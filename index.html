@@ -106,9 +106,9 @@
           // 3000円からの差額が大きいほど確率ダウン
           let acceptRate = 1.0; // 3000〜3349円：100%（最優先）
 
-          if (diff >= 350 && diff < 700) {
+          if (diff >= 350 && diff < 605) {
             acceptRate = 0.4;  // 3350〜3699円：40%
-          } else if (diff >= 700) {
+          } else if (diff >= 605) {
             acceptRate = 0.05; // 3700円以上：5%（激レア）
           }
 
