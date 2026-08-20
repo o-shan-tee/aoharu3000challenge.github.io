@@ -100,7 +100,7 @@
         // --- 2. 金額判定（3000円に近いほど出やすい） ---
         const totalPrice = selected.reduce((sum, item) => sum + item.price, 0);
 
-        if (totalPrice >= 3000 && totalPrice <= 3999) {
+        if (totalPrice >= 3000 && totalPrice <= 3799) {
           const diff = totalPrice - 3000;
 
           // 3000円からの差額が大きいほど確率ダウン
@@ -109,7 +109,7 @@
           if (diff >= 350 && diff < 605) {
             acceptRate = 0.4;  // 3350〜3699円：40%
           } else if (diff >= 605) {
-            acceptRate = 0.05; // 3700円以上：5%（激レア）
+            acceptRate = 0.02; // 3700円以上：5%（激レア）
           }
 
           // 確率判定で落とされたらやり直し
