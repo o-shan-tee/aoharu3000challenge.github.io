@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>3000円以上の愛を捧げてガチャガチャに参加しよう</title>
+  <title>3000円チャレンジ</title>
   <style>
     body { font-family: sans-serif; text-align: center; padding: 20px; }
     
@@ -48,7 +48,7 @@
   </style>
 </head>
 <body>
-  <h1>3000以上の愛</h1>
+  <h1>3000円以上の愛を捧げてガチャガチャに参加しよう</h1>
 
   <!-- 1. ガチャボタン -->
   <div class="btn-container">
@@ -74,7 +74,7 @@
 
     function drawGacha() {
       let found = false;
-      for (let i = 0; i < 1000; i++) {
+      for (let i = 0; i < 3000; i++) { // 確率調整を入れるため試行回数を増やしています
         const k = Math.floor(Math.random() * 6) + 1;
         const selected = [];
         for (let j = 0; j < k; j++) {
@@ -83,7 +83,24 @@
 
         const totalPrice = selected.reduce((sum, item) => sum + item.price, 0);
 
+        // 1. まず 3000 〜 3999 円の範囲か確認
         if (totalPrice >= 3000 && totalPrice <= 3999) {
+          
+          // 2. 金額に応じた確率判定（重み付け）
+          let acceptRate = 1.0; // 基本の当選確率 (100%)
+
+          if (totalPrice >= 3000 && totalPrice <= 3500) {
+            acceptRate = 1.0;  // 3000〜3500円：100%の確率で採用（出やすい）
+          } else if (totalPrice >= 3600) {
+            acceptRate = 0.15; // 3600円以上：15%の確率でしか採用しない（出にくい）
+          }
+
+          // 乱数で採用するか判断（不採用なら次の試行へ）
+          if (Math.random() > acceptRate) {
+            continue;
+          }
+
+          // 条件クリア（画面表示処理）
           found = true;
           const counts = {};
           selected.forEach(item => {
