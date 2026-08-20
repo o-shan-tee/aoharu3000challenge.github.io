@@ -74,36 +74,50 @@
 
     function drawGacha() {
       let found = false;
-      for (let i = 0; i < 5000; i++) { // 判定を厳しくするため試行回数を増やしています
+      // 判定をしっかり行うため試行回数を増やしています
+      for (let i = 0; i < 10000; i++) {
         const k = Math.floor(Math.random() * 6) + 1;
         const selected = [];
+        let rejectCombination = false;
+
+        // --- 1. 商品選出（乾杯ジョッキの排出率ダウン） ---
         for (let j = 0; j < k; j++) {
-          selected.push(items[Math.floor(Math.random() * items.length)]);
+          const item = items[Math.floor(Math.random() * items.length)];
+          
+          // 「乾杯ジョッキ」が選ばれたら 80% の確率でやり直し（採用率20%）
+          if (item.name === "乾杯ジョッキ") {
+            if (Math.random() < 0.80) { 
+              rejectCombination = true;
+              break; 
+            }
+          }
+          selected.push(item);
         }
 
+        // ジョッキ弾きが発生した場合は次の試行へ
+        if (rejectCombination) continue;
+
+        // --- 2. 金額判定（3000円に近いほど出やすい） ---
         const totalPrice = selected.reduce((sum, item) => sum + item.price, 0);
 
-        // 1. 3000 〜 3999 円の範囲か判定
         if (totalPrice >= 3000 && totalPrice <= 3999) {
-          
-          // 2. 3000円からの差額を計算
           const diff = totalPrice - 3000;
 
-          // 350円刻みで1段ずつ確率をダウンさせる設定（3000円台前半が一番出やすい）
-          let acceptRate = 1.0; // 3000〜3349円：100%
+          // 3000円からの差額が大きいほど確率ダウン
+          let acceptRate = 1.0; // 3000〜3349円：100%（最優先）
 
           if (diff >= 350 && diff < 700) {
-            acceptRate = 0.4;  // 3350〜3699円：40%まで下げる
+            acceptRate = 0.4;  // 3350〜3699円：40%
           } else if (diff >= 700) {
-            acceptRate = 0.05; // 3700円以上：5%（かなり激レア）
+            acceptRate = 0.05; // 3700円以上：5%（激レア）
           }
 
-          // 判定（不採用ならやり直し）
+          // 確率判定で落とされたらやり直し
           if (Math.random() > acceptRate) {
             continue;
           }
 
-          // 条件クリア時の画面表示
+          // --- 3. 画面表示 ---
           found = true;
           const counts = {};
           selected.forEach(item => {
@@ -120,6 +134,7 @@
           break;
         }
       }
+
       if (!found) {
         document.getElementById("result").innerHTML = "<p>条件に合う組み合わせが見つかりませんでした。</p>";
       }
